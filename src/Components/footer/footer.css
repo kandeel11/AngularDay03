@@ -1,0 +1,36 @@
+.modern-footer {
+    background-color: #151e30;
+    color: #fff;
+    padding: 60px 0 20px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #edf0f4;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #4f46e5;
+    padding-left: 8px;
+}
+.text-muted {
+    color: #bbb !important;
+}
+.footer-contact p {
+    color: #ffffff;
+}
+.footer-bottom {
+    margin-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    font-size: 0.9rem;
+    color: #bbb;
+}
+

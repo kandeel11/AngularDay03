@@ -1,0 +1,38 @@
+.modern-navbar {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    padding: 15px 0;
+    transition: all 0.3s ease;
+    z-index: 1030;
+}
+
+.modern-navbar .nav-link {
+    color: #333;
+    font-weight: 500;
+    margin: 0 10px;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.modern-navbar .nav-link:hover,
+.modern-navbar .nav-link.active {
+    color: #4f46e5 !important;
+}
+
+.modern-navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #4f46e5;
+    transition: width 0.3s ease;
+}
+
+.modern-navbar .nav-link:hover::after {
+    width: 100%;
+}
