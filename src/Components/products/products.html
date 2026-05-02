@@ -5,23 +5,16 @@
             <i class="fa-solid fa-sun light-icon fs-5"></i>
         </button>
     </div>
-    <div class="d-flex justify-content-start align-items-center mb-4 gap-3">
-        <select class="form-select w-auto" [(ngModel)]="selectedCategory" (change)="prodfilter()">
-            @for(cat of CategoryList; track cat.id){
-            <option [value]="cat.slug">{{ cat.name }}</option>
-            }
-        </select>
-    </div>
     <h1 class="mb-4 fw-bold text-center" style="color: var(--text-primary)">{{ selectedCategory | titlecase }} Products
     </h1>
 
     <!-- total price -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold" style="color: var(--text-primary)">Total Price: {{ totalprice | currency:'EUR' }}</h3>
-    </div>
     <h2 class="mb-4 fw-bold text-center" style="color: var(--text-primary)">Our Products</h2>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <div class="col-12 w-100">
+            <ng-content></ng-content>
+        </div>
         @for (p of filteredProducts; track p.id;let i =$index) {
         <div class="col">
             <div class="card shadow-sm h-100 product-card" appFocusContent>
@@ -97,9 +90,10 @@
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-dark w-100 py-2 fw-semibold rounded-3 shadow-sm transition"
-                            [disabled]="p.stock===0" (click)="buyProduct(inp , p)">Add to
-                            Cart </button>
+                        <app-btn-dynamic label="Add to Cart"
+                            buttonClass="btn text-white py-2 fw-semibold rounded-3 shadow-sm transition" color="#212529"
+                            width="100%" height="42px" [disabled]="p.stock===0" (buttonClick)="buyProduct(inp, p)">
+                        </app-btn-dynamic>
                     </div>
                 </div>
             </div>

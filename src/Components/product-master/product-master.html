@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-start align-items-center m-4  gap-3">
+    <select class="form-select w-auto" [(ngModel)]="selectedCategory">
+        @for(cat of CategoryList; track cat.id){
+        <option [value]="cat.slug">{{ cat.name }}</option>
+        }
+    </select>
+</div>
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <h3 #myHeading class="fw-bold" style="color: var(--text-primary)">Total Price: {{ totalPrice | currency:'EUR' }}
+    </h3>
+</div>
+<app-products [selectedCategory]="selectedCategory" (total)="totalprice($event)">
+    <p #projectedContent class="text-danger fw-bold text-center">This is projected content passed from ProductMaster!
+    </p>
+</app-products>

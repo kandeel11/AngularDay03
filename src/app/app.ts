@@ -4,9 +4,10 @@ import { Home } from '../Components/home/home';
 import { Footer } from '../Components/footer/footer';
 import { Header } from '../Components/header/header';
 import { Products } from '../Components/products/products';
+import { ProductMaster } from '../Components/product-master/product-master';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,Header,Footer,Home,Products],
+  imports: [RouterOutlet,Header,Footer,Home,ProductMaster],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
