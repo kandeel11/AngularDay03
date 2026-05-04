@@ -61,5 +61,6 @@ For more information on using the Angular CLI, including detailed command refere
 ## Admin Login
 
 To login as an administrator, use the following credentials on the Sign In page:
+
 - **Username:** `admin`
 - **Password:** `admin`
