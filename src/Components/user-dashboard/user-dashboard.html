@@ -1,0 +1,77 @@
+<div class="dashboard-shell">
+    <section class="hero-card">
+        <div class="hero-copy">
+            <p class="eyebrow">Admin Portal</p>
+            <h1>Users Dashboard</h1>
+            <p>Live users loaded from dynamic service endpoint.</p>
+        </div>
+
+        <div class="metrics-grid">
+            <article class="metric-card">
+                <span class="metric-label">Total Users</span>
+                <strong>{{ totalUsers }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Average Age</span>
+                <strong>{{ averageAge }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Youngest</span>
+                <strong>{{ youngestAge }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="metric-label">Oldest</span>
+                <strong>{{ oldestAge }}</strong>
+            </article>
+        </div>
+    </section>
+
+    <section class="users-surface">
+
+
+        @if (loading) {
+        <div class="status-state">
+            <p>Loading users...</p>
+        </div>
+        } @else if (errorMessage) {
+        <div class="status-state error">
+            <p>{{ errorMessage }}</p>
+        </div>
+        }
+        @else {
+        <div class="users-grid">
+            @for (user of filteredUsers; track user.id) {
+            <article class="user-card" [class.user-card--selected]="selectedUser?.id === user.id"
+                (click)="selectUser(user)">
+                <header class="user-head">
+                    <span class="avatar">{{ initials(user.name) }}</span>
+                    <div>
+                        <h3>{{ user.name }}</h3>
+                        <p>{{ '@' + user.username }}</p>
+                    </div>
+                </header>
+
+                <div class="user-body">
+                    <p><span>Email:</span> {{ user.email }}</p>
+                    <p><span>Age:</span> {{ user.age }} years</p>
+                    <p><span>Address:</span> {{ user.address }}</p>
+                </div>
+
+                <div class="user-actions">
+                    <button type="button" class="delete-btn" (click)="deleteUser(user); $event.stopPropagation()">
+                        Delete
+                    </button>
+                </div>
+
+                @if (selectedUser?.id === user.id) {
+                <div class="expanded">
+                    <p><span>User ID:</span> {{ user.id }}</p>
+                    <p><span>Contact:</span> {{ user.email }}</p>
+                </div>
+                }
+            </article>
+            }
+        </div>
+        }
+    </section>
+</div>

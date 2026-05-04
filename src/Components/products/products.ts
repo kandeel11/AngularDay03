@@ -1,6 +1,6 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, output, SimpleChanges, ContentChild, AfterContentInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { Iproduct } from '../../Models/iproduct';
-import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common';
+import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FocusContent } from '../../directive/focus-content';
 import { ScaleImage } from '../../directive/scale-image';
 import { ThemeChange } from '../../directive/theme-change';
@@ -8,26 +8,27 @@ import { DescriptionSlicePipe } from '../../pipes/description-slice-pipe';
 import { FormsModule } from '@angular/forms';
 import { StaticData } from '../../Services/static-data';
 import { BtnDynamic } from '../btn-dynamic/btn-dynamic';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
-  imports: [NgClass,NgStyle,FocusContent,ScaleImage,ThemeChange,CurrencyPipe,DescriptionSlicePipe,TitleCasePipe,FormsModule,BtnDynamic],
+  imports: [FocusContent,ScaleImage,ThemeChange,CurrencyPipe,DescriptionSlicePipe,TitleCasePipe,FormsModule,BtnDynamic],
   templateUrl: './products.html',
   styleUrl: './products.css',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class Products implements OnChanges, AfterContentInit {
+  private readonly data = inject(StaticData);
+  private readonly router = inject(Router);
+
   @Input() selectedCategory:string='all';
    @Output() total=new EventEmitter<number>();
    
    // ContentChild example
    @ContentChild('projectedContent') projected!: ElementRef;
 
-   filteredProducts:Iproduct[];
+   filteredProducts:Iproduct[] = this.data.getProducts();
     totalprice:number=0;
-  constructor(private Data:StaticData) {
-  
-    this.filteredProducts = this.Data.allProducts();
-}
 
   ngAfterContentInit(): void {
     console.log('Projected element (ContentChild):', this.projected?.nativeElement);
@@ -37,7 +38,7 @@ export class Products implements OnChanges, AfterContentInit {
     this.selectedCategory = changes['selectedCategory'].currentValue;
     this.prodfilter();
   }
-increaseQuantity(product: any) {
+ increaseQuantity(product: Iproduct): void {
     if (!product.quantity) {
       product.quantity = 1;
     }
@@ -46,7 +47,7 @@ increaseQuantity(product: any) {
     }
   }
 
-  decreaseQuantity(product: any) {
+  decreaseQuantity(product: Iproduct): void {
     if (!product.quantity) {
       product.quantity = 1;
     }
@@ -54,23 +55,29 @@ increaseQuantity(product: any) {
       product.quantity--;
     }
   }
-buyProduct(inp:any,p:Iproduct){
-  if(inp.value>0 && inp.value<=p.stock){
-  this.totalprice+=inp.value*p.price;
+ buyProduct(inp: HTMLInputElement,p:Iproduct): void {
+  const quantity = Number(inp.value);
+  if(quantity>0 && quantity<=p.stock){
+  this.totalprice+=quantity*p.price;
   this.total.emit(this.totalprice);
-  p.stock-=inp.value;
-  inp.value=0;
+  p.stock-=quantity;
+  p.quantity = 1;
+  inp.value='1';
   }else{
     alert("Please enter a valid quantity (1-" + p.stock + ")");
   }
 }
-prodfilter(){
+
+goToDetails(id: number): void {
+  this.router.navigate(['/products', id]);
+}
+
+prodfilter(): void {
   if(this.selectedCategory==="all"){
-    this.filteredProducts=this.Data.allProducts();
+    this.filteredProducts=this.data.getProducts();
   }else{
-    this.filteredProducts=this.Data.filterByCategory(this.selectedCategory);
+    this.filteredProducts=this.data.filterByCategory(this.selectedCategory);
   }
 }
 
 }
-

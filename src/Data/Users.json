@@ -1,0 +1,35 @@
+{
+  "users": [
+    {
+      "id": "2",
+      "name": "Sara Hassan",
+      "address": "45 Nile Ave, Giza",
+      "age": 24,
+      "username": "sara_h24",
+      "email": "sara.hassan@example.com",
+      "password": "SecurePass2026",
+      "confirm_password": "SecurePass2026"
+    },
+    {
+      "id": "3",
+      "name": "Omar Khaled",
+      "address": "88 Alex Road, Alexandria",
+      "age": 32,
+      "username": "omar_k",
+      "email": "omar.khaled@example.com",
+      "password": "MySecretPassword88",
+      "confirm_password": "MySecretPassword88"
+    },
+    {
+      "id": "4",
+      "name": "Mona Youssef",
+      "address": "12 Tahrir Sq, Cairo",
+      "age": 22,
+      "username": "mona_y",
+      "email": "mona.youssef@example.com",
+      "password": "MonaPassword!@#",
+      "confirm_password": "MonaPassword!@#"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

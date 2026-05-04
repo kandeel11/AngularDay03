@@ -1,0 +1,52 @@
+<div class="auth-page">
+    <section class="auth-card">
+        <a class="back-home" routerLink="/home">Back to Home</a>
+        <p class="auth-chip">Join Us</p>
+        <h1>Create account</h1>
+        <p class="auth-subtitle">Start with a clean, modern profile setup in seconds.</p>
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form auth-grid">
+            <label class="field" for="name">
+                <span>Full Name</span>
+                <input type="text" id="name" formControlName="name" autocomplete="name" required>
+            </label>
+
+            <label class="field" for="username">
+                <span>Username</span>
+                <input type="text" id="username" formControlName="username" autocomplete="username" required>
+            </label>
+
+            <label class="field field--full" for="address">
+                <span>Address</span>
+                <input type="text" id="address" formControlName="address" autocomplete="street-address" required>
+            </label>
+
+            <label class="field" for="age">
+                <span>Age</span>
+                <input type="number" id="age" formControlName="age" min="1" required>
+            </label>
+
+            <label class="field" for="email">
+                <span>Email Address</span>
+                <input type="email" id="email" formControlName="email" autocomplete="email" required>
+            </label>
+
+            <label class="field" for="password">
+                <span>Password</span>
+                <input type="password" id="password" formControlName="password" autocomplete="new-password" required>
+            </label>
+
+            <label class="field" for="confirm_password">
+                <span>Confirm Password</span>
+                <input type="password" id="confirm_password" formControlName="confirm_password"
+                    autocomplete="new-password" required>
+            </label>
+
+            <button type="submit" class="submit-btn field--full" [disabled]="signupForm.invalid">Sign Up</button>
+        </form>
+
+        <p class="auth-switch">
+            Already have an account? <a routerLink="/signin">Sign In</a>
+        </p>
+    </section>
+</div>

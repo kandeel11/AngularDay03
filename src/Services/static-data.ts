@@ -1,11 +1,13 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Iproduct } from '../Models/iproduct';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StaticData  {
   productsList:Iproduct[];
+  private authService = inject(AuthService);
   constructor() {
     this.productsList = [
       {
@@ -423,16 +425,61 @@ export class StaticData  {
       ]
     }
   ]
-  }
-  allProducts(){
-    return this.productsList;
+
   }
 
-  filterByCategory(category:string){
-    if(category=='all'){
-      return this.productsList;
-    }else{
-      return this.productsList.filter(p=>p.category==category);
+  filterByCategory(category: string): Iproduct[] {
+    return this.productsList.filter((product) => product.category === category);
+  }
+
+  getProducts(): Iproduct[] {
+    return [...this.productsList];
+  }
+
+  getProductById(id: number): Iproduct | undefined {
+    return this.productsList.find((product) => product.id === id);
+  }
+
+  addProduct(product: Omit<Iproduct, 'id'>): Iproduct {
+    if (!this.authService.isAdmin()) {
+      throw new Error('Unauthorized: Admin access required to add products.');
     }
+    const newProduct: Iproduct = {
+      ...product,
+      id: this.getNextProductId(),
+    };
+
+    this.productsList.push(newProduct);
+    return newProduct;
+  }
+
+  updateProduct(id: number, updates: Partial<Omit<Iproduct, 'id'>>): Iproduct | undefined {
+    if (!this.authService.isAdmin()) {
+      throw new Error('Unauthorized: Admin access required to update products.');
+    }
+    const product = this.getProductById(id);
+    if (!product) {
+      return undefined;
+    }
+
+    Object.assign(product, updates);
+    return product;
+  }
+
+  deleteProduct(id: number): boolean {
+    if (!this.authService.isAdmin()) {
+      throw new Error('Unauthorized: Admin access required to delete products.');
+    }
+    const originalLength = this.productsList.length;
+    this.productsList = this.productsList.filter((product) => product.id !== id);
+    return this.productsList.length < originalLength;
+  }
+
+  private getNextProductId(): number {
+    if (this.productsList.length === 0) {
+      return 1;
+    }
+
+    return Math.max(...this.productsList.map((product) => product.id)) + 1;
   }
 }

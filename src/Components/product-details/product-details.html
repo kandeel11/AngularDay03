@@ -1,0 +1,51 @@
+<div class="container py-5">
+    @if (product; as currentProduct) {
+    <article class="details-card">
+        <a class="back-link" routerLink="/products">Back to Products</a>
+
+        <div class="details-grid">
+            <div class="image-col">
+                <div class="main-image-wrap">
+                    <img [src]="currentProduct.images[0]" [alt]="currentProduct.title" class="main-image">
+                </div>
+
+                <div class="thumb-row">
+                    @for (image of currentProduct.images; track image) {
+                    <img [src]="image" [alt]="currentProduct.title" class="thumb-image">
+                    }
+                </div>
+            </div>
+
+            <div class="content-col">
+                <p class="category-pill">{{ currentProduct.category | titlecase }}</p>
+                <h1 class="mb-2">{{ currentProduct.title }}</h1>
+                <p class="text-secondary mb-3">{{ currentProduct.description }}</p>
+
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <span class="price">{{ currentProduct.price | currency:'EUR' }}</span>
+                    <span class="rating">★ {{ currentProduct.rating }}</span>
+                </div>
+
+                <div class="stock-row">
+                    @switch (currentProduct.stock) {
+                    @case (0) {
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Out of Stock</span>
+                    }
+                    @default {
+                    <span class="badge bg-success-subtle text-success border border-success-subtle">
+                        {{ currentProduct.stock }} In Stock
+                    </span>
+                    }
+                    }
+                </div>
+            </div>
+        </div>
+    </article>
+    } @else {
+    <article class="details-card text-center">
+        <h2 class="mb-3">Product not found</h2>
+        <p class="text-secondary mb-4">The product you requested does not exist.</p>
+        <a class="btn btn-primary" routerLink="/products">Go to Products</a>
+    </article>
+    }
+</div>
