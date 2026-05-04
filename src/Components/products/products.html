@@ -11,6 +11,66 @@
     <!-- total price -->
     <h2 class="mb-4 fw-bold text-center" style="color: var(--text-primary)">Our Products</h2>
 
+    @if (authService.isAdmin()) {
+    <div class="d-flex justify-content-center mb-4">
+        <button class="btn btn-primary shadow-sm" (click)="toggleAdminForm()">
+            <i class="fa-solid" [ngClass]="showAdminForm ? 'fa-xmark' : 'fa-plus'"></i>
+            {{ showAdminForm ? 'Cancel' : 'Add New Product' }}
+        </button>
+    </div>
+
+    @if (showAdminForm) {
+    <div class="card mb-4 border-0 shadow-sm modern-card">
+        <div class="card-body p-4">
+            <h4 class="card-title fw-bold mb-4">{{ isEditing ? 'Edit Product' : 'Add New Product' }}</h4>
+            <form [formGroup]="productForm" (ngSubmit)="onSubmitAdminForm()">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" formControlName="title">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" formControlName="category">
+                            <option value="beauty">Beauty</option>
+                            <option value="fragrances">Fragrances</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="groceries">Groceries</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="2" formControlName="description"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Price</label>
+                        <input type="number" class="form-control" formControlName="price">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Discount (%)</label>
+                        <input type="number" class="form-control" formControlName="discountPercentage">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" formControlName="stock">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Image URL</label>
+                        <input type="text" class="form-control" formControlName="images">
+                    </div>
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-secondary" (click)="toggleAdminForm()">Cancel</button>
+                        <button type="submit" class="btn btn-success" [disabled]="productForm.invalid">
+                            {{ isEditing ? 'Save Changes' : 'Create Product' }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    }
+    }
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div class="col-12 w-100">
             <ng-content></ng-content>
@@ -19,6 +79,17 @@
         <div class="col">
             <article class="card h-100 product-card modern-card border-0" appFocusContent>
                 <div class="product-img-wrapper">
+                    @if (authService.isAdmin()) {
+                    <div class="position-absolute top-0 end-0 p-2 z-3 d-flex gap-2">
+                        <button class="btn btn-sm btn-primary shadow-sm" (click)="editProduct(p)">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger shadow-sm" (click)="deleteProduct(p)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    }
+
                     <span class="badge badge-category rounded-pill px-3 py-2 shadow-sm border">{{ p.category
                         }}</span>
                     <span class="badge badge-discount rounded-pill px-2 py-1 shadow-sm">{{ p.discountPercentage
